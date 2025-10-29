@@ -1150,24 +1150,41 @@ src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d223444.37510425807!2d
 
           <h3 class="h3 form-title">Contact Form</h3>
 
-          <form action="https://api.web3forms.com/submit" method="POST" class="form" data-form>
+          <form id="contact-form" class="form">
+  <input type="hidden" name="access_key" value="db2dc220-2751-4cec-9738-25927ae7ac44">
 
-            <div class="input-wrapper">
-              <input type="hidden" name="access_key" value="db2dc220-2751-4cec-9738-25927ae7ac44">
-              
-              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+  <input type="text" name="fullname" placeholder="Full name" required>
+  <input type="email" name="email" placeholder="Email address" required>
+  <textarea name="message" placeholder="Your Message" required></textarea>
 
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
-            </div>
+  <button type="submit">Send Message</button>
+</form>
 
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+<p id="form-status"></p>
 
-            <button class="form-btn" type="submit" disabled data-form-btn>
-              <ion-icon name="paper-plane"></ion-icon>
-              <span>Send Message</span>
-            </button>
+<script>
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault(); // prevent page reload
+  const form = e.target;
+  const formData = new FormData(form);
 
-          </form>
+  const response = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: formData
+  });
+
+  const result = await response.json();
+
+  const status = document.getElementById('form-status');
+  if (response.ok) {
+    status.textContent = "✅ Message sent successfully!";
+    form.reset();
+  } else {
+    status.textContent = "❌ Failed to send message. Please try again.";
+  }
+});
+</script>
+
 
         </section>
 
@@ -1196,4 +1213,5 @@ src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d223444.37510425807!2d
 </body>
 
 </html>
+
 
